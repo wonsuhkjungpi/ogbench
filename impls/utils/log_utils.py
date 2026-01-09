@@ -70,6 +70,9 @@ def setup_wandb(
     wandb_output_dir = tempfile.mkdtemp()
     tags = [group] if group is not None else None
 
+    # Respect WANDB_MODE environment variable if set
+    wandb_mode = os.environ.get('WANDB_MODE', mode)
+
     init_kwargs = dict(
         config=get_flag_dict(),
         project=project,
@@ -82,7 +85,7 @@ def setup_wandb(
             start_method='thread',
             _disable_stats=False,
         ),
-        mode=mode,
+        mode=wandb_mode,
         save_code=True,
     )
 
